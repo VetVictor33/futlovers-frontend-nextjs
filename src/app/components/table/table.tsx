@@ -18,7 +18,10 @@ export async function Table (){
         <table className="w-full text-left border-collapse">
           <TableHead/>
           <tbody>
-            {players.map((player) => <TableRow key={player.id} player={player}/>)}
+            { players.length ?
+            players.map((player) => <TableRow key={player.id} player={player}/>):
+              <h1 className="m-4 font-semi-bold text-xl">Não existe nenhum jogador cadastrado</h1>
+            }
           </tbody>
         </table>
     )
