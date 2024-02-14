@@ -1,21 +1,20 @@
 'use client'
-import { useState } from "react"
 import { useRouter } from "next/navigation"
+import { Suspense, useState } from "react"
 import Swal from "sweetalert2"
 
 import { postPlayer, putPlayer } from "@/app/libs/player"
 
 import { Player } from "@/app/interfaces/player"
-import { Team } from "@/app/interfaces/team"
 
 import { FeedbackParagraph } from "./feedback-paragraph"
+import { TeamOptions } from "./team-options"
 
 interface PlayerFormProps {
     editingPlayer?: Player
-    teams: Team[]
 }
 
-export function PlayerForm({editingPlayer, teams}:PlayerFormProps){
+export function PlayerForm({editingPlayer}:PlayerFormProps){
     const [form, setForm] = useState<Partial<Player>>({name: editingPlayer?.name ?? '', age: editingPlayer?.age ?? 0, team_id: editingPlayer?.team_id ?? ''})
     const [errorMessage, setErrorMessage] = useState('')
     const router = useRouter()
@@ -80,8 +79,10 @@ export function PlayerForm({editingPlayer, teams}:PlayerFormProps){
             <div className="flex flex-col flex-grow">
               <label htmlFor="time" className="text-sm font-medium">Time</label>
               <select id="team_id" name="team_id" value={form.team_id} onChange={handleFormChange} className="border border-gray-300 rounded-md p-2 flex-grow">
-                <option value="">Selecione um time</option>
-                {teams.map((team) => <option key={team.id} value={team.id}>{team.name}</option>)}
+                  <option value="">Selecione um time</option>
+                  <Suspense fallback={<option>Carregando...</option>}>
+                    <TeamOptions />
+                  </Suspense>
               </select>
             </div>
             {!!errorMessage && <FeedbackParagraph type="error">{errorMessage}</FeedbackParagraph>}
