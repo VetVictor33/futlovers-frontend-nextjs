@@ -50,3 +50,15 @@ export async function putPlayer(player_id: string, data: Partial<Player>){
     }
     return await response.json()
 }
+
+export async function deletePlayer(player_id: string){
+    const response = await fetch(`http://localhost:3333/players/${player_id}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+        },})
+    if(!response.ok) {
+        throw new Error('Erro ao deletar jogador')
+    }
+    return response
+}

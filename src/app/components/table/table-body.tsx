@@ -3,15 +3,16 @@ import { TableRow } from "./tale-row"
 
 interface TableBodyProps {
     players : Promise<Player[]>
+    flag: () => void
 }
 
-export async function TableBody({players}:TableBodyProps) {
+export async function TableBody({players, flag}:TableBodyProps) {
     const resolvedPlayers = await players
 
     return (
         resolvedPlayers.length ?
         <tbody>
-            {resolvedPlayers.map((player) => <TableRow key={player.id} player={player}/>)}
+            {resolvedPlayers.map((player) => <TableRow key={player.id} player={player} flag={flag}/>)}
         </tbody>:
         <h1 className="m-4 font-semi-bold text-xl">Não existe nenhum jogador cadastrado</h1>
     )
