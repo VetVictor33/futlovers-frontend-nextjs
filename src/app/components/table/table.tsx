@@ -1,11 +1,18 @@
+'use client'
 import { getPlayers } from "@/app/libs/player";
-import { Suspense } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { SkeletonRow } from "./skeleton";
 import { TableBody } from "./table-body";
 import { TableHead } from "./table-head";
+import { Player } from "@/app/interfaces/player";
 
-export async function Table (){
-    const players = getPlayers()
+export function Table (){
+    const [players, setPLayers] = useState<Promise<Player[]>>(getPlayers())
+
+    useEffect(() => {
+      return () => setPLayers(getPlayers)
+    },[])
+
     return (
       <table className="w-full text-left border-collapse">
         <TableHead/>
