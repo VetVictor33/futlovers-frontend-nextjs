@@ -80,7 +80,7 @@ export function PlayerForm({editingPlayer}:PlayerFormProps){
               <label htmlFor="time" className="text-sm font-medium">Time</label>
               <select id="team_id" name="team_id" value={form.team_id} onChange={handleFormChange} className="border border-gray-300 rounded-md p-2 flex-grow">
                   <option value="">Selecione um time</option>
-                  <Suspense fallback={<option>Carregando...</option>}>
+                  <Suspense fallback={<option value="">Carregando...</option>}>
                     <TeamOptions />
                   </Suspense>
               </select>
