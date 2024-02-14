@@ -1,9 +1,14 @@
 'use client'
+import { useState } from "react"
+import { useRouter } from "next/navigation"
+import Swal from "sweetalert2"
+
+import { postPlayer, putPlayer } from "@/app/libs/player"
+
 import { Player } from "@/app/interfaces/player"
 import { Team } from "@/app/interfaces/team"
-import { useState } from "react"
+
 import { FeedbackParagraph } from "./feedback-paragraph"
-import { postPlayer, putPlayer } from "@/app/libs/player"
 
 interface PlayerFormProps {
     editingPlayer?: Player
@@ -13,11 +18,10 @@ interface PlayerFormProps {
 export function PlayerForm({editingPlayer, teams}:PlayerFormProps){
     const [form, setForm] = useState<Partial<Player>>({name: editingPlayer?.name ?? '', age: editingPlayer?.age ?? 0, team_id: editingPlayer?.team_id ?? ''})
     const [errorMessage, setErrorMessage] = useState('')
-    const [successMessage, setSuccessMessage] = useState('')
+    const router = useRouter()
 
     const handleFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement> ) => {
         setErrorMessage('')
-        setSuccessMessage('')
         const {name, value} = e.target
         setForm((values) => {
             return {...values, [name]:value}
@@ -32,20 +36,28 @@ export function PlayerForm({editingPlayer, teams}:PlayerFormProps){
         }
         try {
             if(editingPlayer){
-              const response:Player = await putPlayer(
-                editingPlayer.id, {name: form.name, age: +form.age, team_id: form.team_id}
-              )
-              setSuccessMessage(`${form.name} editado com sucesso!`)
-              setForm({name: response.name, age: response.age, team_id: response.team_id})
+              await putPlayer(editingPlayer.id, {name: form.name, age: +form.age, team_id: form.team_id})
             } else {
-              await postPlayer(
-                form.team_id, {name: form.name, age: +form.age}
-                )
-              setSuccessMessage(`${form.name} criado com sucesso!`)
-              setForm({name: '', age: 0, team_id: ''})
+              await postPlayer(form.team_id, {name: form.name, age: +form.age})
             }
+            Swal.fire({
+              title: `Sucesso!`,
+              html: `Jogador ${form.name} ${editingPlayer ? 'editador' : 'cadastrado'} com sucesso`,
+              timer: 1500,
+              timerProgressBar: true,
+              willClose: () => {
+                router.push('/')
+                setForm({name: '', age: 0, team_id: ''})
+              }
+            })
         } catch (error) {
-            setErrorMessage('Algo deu errado ao criar o jogador')
+            Swal.fire({
+              title: `Erro!`,
+              html: "Não conseguimos cadastrar o jogador, tente novamente mais tarde.",
+              icon: 'error',
+              timer: 1000,
+              timerProgressBar: true,
+            })
         }
     }
 
@@ -73,7 +85,6 @@ export function PlayerForm({editingPlayer, teams}:PlayerFormProps){
               </select>
             </div>
             {!!errorMessage && <FeedbackParagraph type="error">{errorMessage}</FeedbackParagraph>}
-            {!!successMessage && <FeedbackParagraph type="success">{successMessage}</FeedbackParagraph>}
           </div>
           <button className="bg-blue-500 hover:bg-blue-700 text-white rounded-md p-2 mt-4 ml-auto block">SALVAR</button>
         </form>

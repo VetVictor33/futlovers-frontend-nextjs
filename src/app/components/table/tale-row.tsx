@@ -2,7 +2,7 @@
 import { Player } from "@/app/interfaces/player"
 import { TableButton } from "./table-button"
 import { useRouter } from "next/navigation"
-import { swalWarning } from "../alert"
+import { swalWarning } from "../../utils/alert"
 import Swal from "sweetalert2"
 import { deletePlayer } from "@/app/libs/player"
 
