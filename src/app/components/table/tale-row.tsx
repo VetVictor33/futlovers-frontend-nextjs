@@ -17,7 +17,7 @@ export function TableRow({player, flag}: TableRowProps){
     const router = useRouter()
 
     const handleRouter = () => {
-        router.push(`/player/${player.id}`)
+        router.push(`/jogadores/${player.id}`)
     }
 
     const handleDelete = () => {

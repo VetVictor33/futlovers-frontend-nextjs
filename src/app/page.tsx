@@ -7,8 +7,8 @@ export default function Home() {
       <div className="flex justify-between m-6 content-center">
           <h1 className="font-bold text-2xl">Jogadores</h1>
           <div className="flex flex-col gap-1">
-            <AddButton url="/player/new" text="+ Adicionar Jogador" />
-            <AddButton url="/team/new" text="+ Adicionar Time" />
+            <AddButton url="/jogadores/novo" text="+ Adicionar Jogador" />
+            <AddButton url="/times/novo" text="+ Adicionar Time" />
           </div>
       </div>
       <Table/>
