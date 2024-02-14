@@ -45,8 +45,8 @@ export function PlayerForm({editingPlayer}:PlayerFormProps){
               timer: 1500,
               timerProgressBar: true,
               willClose: () => {
-                router.push('/')
                 setForm({name: '', age: 0, team_id: ''})
+                router.push('/')
               }
             })
         } catch (error) {
@@ -62,7 +62,7 @@ export function PlayerForm({editingPlayer}:PlayerFormProps){
 
     return(
         <form onSubmit={handleSubmit}>
-        <h2 className="text-xl font-bold">Inserir Jogador</h2>
+        <h2 className="text-xl font-bold">{`${editingPlayer ? 'Editar' : 'Inserir'} Jogador`}</h2>
           <div className="flex flex-col gap-4">
             <div className="flex gap-4">
               <div className="flex flex-col flex-grow">
