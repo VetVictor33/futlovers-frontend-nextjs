@@ -15,7 +15,7 @@ export function Table (){
     }
 
     useEffect(() => {
-      return () => setPLayers(getPlayers)
+      setPLayers(getPlayers)
     },[deletedFlag])
 
     return (
