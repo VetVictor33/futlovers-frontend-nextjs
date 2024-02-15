@@ -14,6 +14,12 @@ export async function TableBody({players, flag}:TableBodyProps) {
         <tbody>
             {resolvedPlayers.map((player) => <TableRow key={player.id} player={player} flag={flag}/>)}
         </tbody>:
-        <h1 className="m-4 font-semi-bold text-xl">Não existe nenhum jogador cadastrado</h1>
+        <tbody>
+            <tr>
+                <td className="p-4 font-semi-bold text-xl">
+                    Não existe nenhum jogador cadastrado
+                </td>
+            </tr>
+        </tbody>
     )
 }
